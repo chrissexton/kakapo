@@ -10,7 +10,7 @@ import (
 	. "kakapo/lisp"
 )
 
-const VERSION = `0.4`
+const VERSION = `0.5`
 
 var (
 	version = flag.Bool("V", false, "Display version information and exit")

@@ -2,6 +2,15 @@ package lisp
 
 type primitive func(*scope, []sexpr) sexpr
 
+// (go (func args...))
+func primitiveGo(sc *scope, ss []sexpr) sexpr {
+	go func() {
+		builtinEval(sc, ss)
+	}()
+	return Nil
+}
+
+
 // (if cond expr1 expr2)
 func primitiveIf(sc *scope, ss []sexpr) sexpr {
 	if len(ss) < 2 || len(ss) > 3 {

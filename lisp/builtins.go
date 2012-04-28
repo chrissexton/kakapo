@@ -58,12 +58,52 @@ func init() {
 		// Panics (panic.go)
 		"recover": function(builtinRecover),
 		"panic":   function(builtinPanic),
+
+		// Concurrency
+		"make-chan": function(builtinMakeChan),
+		"go": primitive(primitiveGo),
+		"<-": function(builtinLeftArrow),
 	}
 
 	global = &scope{globalData, nil}
 
 	// Now interpret init_lisp
 	load(init_lisp)
+}
+
+// (make-chan)
+//
+// Makes a channel for sexprs.
+func builtinMakeChan(sc *scope, ss []sexpr) sexpr {
+	return make(chan sexpr)
+}
+
+// (<- c)      Gets the next value from a channel c.
+// (<- c val)  Sends val to a channel c.
+func builtinLeftArrow(sc *scope, ss []sexpr) sexpr {
+	if len(ss) == 1 {
+		// (<- channel) returns the next value from the channel
+		switch c := ss[0].(type) {
+		default:
+			panic(fmt.Sprintf("Expected a channel. Got type %T", c))
+		case chan sexpr:
+			return <-c
+		}
+	} else if len(ss) == 2 {
+		// (<- channel value) 
+		val := ss[1]
+		switch c := ss[0].(type) {
+		default:
+			panic(fmt.Sprintf("Expected a channel. Got type %T", c))
+		case chan sexpr:
+			c <- val
+			return Nil
+		}
+	}
+	msg := fmt.Sprint("Unexpected arguments to <-.",
+			"Wanted (<- c) or (<- c val), got (<-", ss,
+			")")
+	panic(msg)
 }
 
 // (read)

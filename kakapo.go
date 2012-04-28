@@ -1,9 +1,10 @@
+// This is the entry point for the REPL (Read Eval Print Loop).
+
 package main
 
 import (
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"strings"
 	. "kakapo/lisp"
@@ -32,28 +33,22 @@ func main() {
 	ExposeGlobal("-interpreter", "Kakapo")
 	ExposeGlobal("-interpreter-version", VERSION)
 
-	if len(flag.Args()) > 0 {
-		for _, fname := range flag.Args() {
-			f, err := os.Open(fname)
-			if err != nil {
-				panic(err)
-			}
-			EvalFrom(f)
-		}
-		return
-	}
-
 	args := flag.Args()
 	if len(args) == 0 {
 		// Start the read-eval-print loop
 		EvalFrom(strings.NewReader(repl))
 	} else {
 		for _, path := range args {
-			file, err := os.Open(path)
-			if err != nil {
-				log.Fatal(err)
+			if path == "-" {
+				EvalFrom(os.Stdin)
+			} else {
+				file, err := os.Open(path)
+				if err != nil {
+					fmt.Fprintln(os.Stderr, err)
+					os.Exit(1)
+				}
+				EvalFrom(file)
 			}
-			EvalFrom(file)
 		}
 	}
 }

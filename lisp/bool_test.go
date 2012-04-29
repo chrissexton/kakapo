@@ -13,6 +13,11 @@ func TestTrue(t *testing.T) {
 }
 
 func testFalse(t *testing.T) {
-	// falseVals := []string{"false", "(not true)"}
+	falseVals := []string{"false", "(not true)"}
+	for _, v := range(falseVals) {
+		if IsTrue(EvalStr(v)) {
+			t.Error(v, "did not evaluate to falsehood.")
+		}
+	}
 }
 

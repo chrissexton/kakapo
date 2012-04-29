@@ -25,7 +25,7 @@ func asString(v sexpr) string {
 	case cons:
 		return v.String()
 	case sym:
-		return fmt.Sprintf("<sym : %s>", string(v))
+		return string(v)
 	case float64:
 		return fmt.Sprintf("%G", v)
 	case string:

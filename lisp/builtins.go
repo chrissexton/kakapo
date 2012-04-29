@@ -28,6 +28,7 @@ func init() {
 		"eval":  function(builtinEval),
 		"apply": function(builtinApply),
 		"print": function(builtinPrint),
+		"string": function(builtinString),
 
 		// Cons manipulation (cons.go)
 		"cons": function(builtinCons),
@@ -63,7 +64,7 @@ func init() {
 		"panic":   function(builtinPanic),
 
 		// Concurrency
-		"make-chan": function(builtinMakeChan),
+		"chan": function(builtinMakeChan),
 		"go": primitive("go", primitiveGo),
 		"<-": function(builtinLeftArrow),
 
@@ -160,6 +161,19 @@ func builtinPrint(sc *scope, ss []sexpr) sexpr {
 	}
 	fmt.Printf("%s\n", asString(ss[0]))
 	return Nil
+}
+
+// (string expr)
+//
+// Converts the given expr to a string.
+// This is (or should be) the inverse of read-string.
+func builtinString(sc *scope, ss []sexpr) sexpr {
+	if len(ss) != 1 {
+		msg := fmt.Sprint("string function expected 1 argument, got %d",
+			len(ss))
+		panic(msg)
+	}
+	return asString(ss[0])
 }
 
 // (apply func '(arg1 ...))

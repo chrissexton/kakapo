@@ -5,8 +5,19 @@ func builtinNot(sc *scope, ss []sexpr) sexpr {
 	if len(ss) != 1 {
 		panic("Invalid number of arguments")
 	}
-	if ss[0] == nil {
-		return 1.0
-	}
-	return nil
+	return !IsTrue(ss[0])
 }
+
+// nil and false are the only false values.
+// Everything else is considered true.
+func IsTrue(s sexpr) bool {
+	if s == nil {
+		return false
+	}
+	switch s := s.(type) {
+	case bool:
+		return s
+	}
+	return true
+}
+

@@ -101,8 +101,17 @@ func readToken(r io.RuneScanner) (token, error) {
 	switch state {
 	case READY:
 		return "", err
+
 	case COMMENT:
-		return "", err
+		return "", nil
+
+	// So an EOF happened while reading a token.
+	// No big deal. Just return the token.
+	// We need to allow evaluation of strings without
+	// adding artificial whitespace to the end.
+	case READING:
+		tok := token(tmp.String())
+		return tok, nil
 	}
 	panic("Unexpected EOF")
 }

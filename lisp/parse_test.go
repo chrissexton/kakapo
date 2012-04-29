@@ -11,10 +11,10 @@ type readTokenTest struct{
 }
 
 var readTokenTests = []readTokenTest{
-	{"1\n", "1"},
-	{"32.5a\n", "32.5a"},
-	{"32.5 a\n", "32.5"},
-	{"\"b\"\n", "\"b\""},
+	{"1", "1"},
+	{"32.5a", "32.5a"},
+	{"32.5 a", "32.5"},
+	{"\"b\"", "\"b\""},
 	{" \t5;6", "5"},
 	{"(", "("},
 	{")(", ")"},
@@ -40,6 +40,7 @@ type parseTest struct{
 
 var parseTests = []parseTest{
 	{"1\n", 1.0},
+	{"1", 1.0},
 	{"5.5\n", 5.5},
 	{"5e-9\n", 5e-9},
 	{"x\n", sym("x")},

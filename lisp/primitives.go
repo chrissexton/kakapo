@@ -28,18 +28,7 @@ func primitiveIf(sc *scope, ss []sexpr) sexpr {
 	}
 	cond := ss[0]
 	cv := eval(sc, cond)
-
-	pred := true
-	if cv == nil {
-		pred = false
-	} else {
-		switch cv := cv.(type) {
-		case bool:
-			pred = cv
-		}
-	}
-
-	if pred {
+	if IsTrue(cv) {
 		return eval(sc, ss[1])
 	} else if len(ss) == 3 {
 		return eval(sc, ss[2])

@@ -1,8 +1,11 @@
 package lisp
 
+import "fmt"
+
 type primitive func(*scope, []sexpr) sexpr
 
-// (go (func args...))
+// (go expr)
+// Runs expr in the background.
 func primitiveGo(sc *scope, ss []sexpr) sexpr {
 	go func() {
 		builtinEval(sc, ss)
@@ -116,6 +119,44 @@ func primitiveLet(sc *scope, ss []sexpr) sexpr {
 		last = eval(evalScope, l)
 	}
 	return last
+}
+
+// (defmacro f (arg1 arg2 ...) body)
+func primitiveDefmacro(sc *scope, ss []sexpr) sexpr {
+	if len(ss) != 3 {
+		msg := fmt.Sprintf(
+			"Invalid number of arguments to defmacro.  " +
+			"Expected 3, got %i", len(ss))
+		panic(msg)
+	}
+	idSym, ok := ss[0].(sym)
+	if !ok {
+		msg := fmt.Sprint("Expected a symbol as first argument to" +
+			"defmacro, got", ss[0])
+		panic(msg)
+	}
+	argNames := unpackSymList(ss[1])
+	body := ss[2]
+	m := macro{idSym, argNames, body}
+	sc.defineHigh(idSym, m)
+	return Nil
+}
+
+// unpackSymList converts an expression containing a list of symbols to a slice
+// of syms.
+func unpackSymList(e sexpr) []sym {
+	symExprs := flatten(e)
+	slice := make([]sym, len(symExprs))
+	for i, e2 := range(symExprs) {
+		s, ok := e2.(sym)
+		if !ok {
+			msg := fmt.Sprint("Expected a symbol, got %s",
+				asString(e2));
+			panic(msg)
+		}
+		slice[i] = s
+	}
+	return slice
 }
 
 // (define keyword expression)

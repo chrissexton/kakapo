@@ -1,35 +1,34 @@
 package lisp
 
-// Perform appropriate syntax transformations on the given s-expression. Note
-// that some s-expressions that 'should' involve syntax transformations, such
-// as (if cond x y) and (lambda ...), don't - they just aren't evaluated as
-// normal functions. (TODO make user-defined transformations more flexible to
-// add symmetry.)
-func transform(sc *scope, e sexpr) sexpr {
-	return e
-}
-
-// Evaluates an s-expression, excluding syntax transformations (macros).
+// eval evaluates an s-expression, including syntax transformations (macros).
 func eval(sc *scope, e sexpr) sexpr {
-	e = transform(sc, e)
 	switch e := e.(type) {
-	case cons: // a function to evaluate
+	case cons: // a function, primitive or macro to evaluate
 		cons := e
 		car := eval(sc, cons.car)
-		if !isFunction(car) && !isPrimitive(car) {
-			panic("Attempted application on non-function")
-		}
 		cdr := cons.cdr
 		args := flatten(cdr)
-		if isPrimitive(car) {
-			return (car.(primitive))(sc, args)
+		switch f := car.(type) {
+		case function:
+			// Evaluate all arguments
+			for i, a := range args {
+				args[i] = eval(sc, a)
+			}
+			return f(sc, args)
+
+		case primitive:
+			// Run without first evaluating the arguments.
+			return f(sc, args)
+
+		case macro:
+			// Expand the macro and then evaluate the result.
+			return eval(sc, f.expand(args))
+
+		default:
+			msg := ("Attempted application on something other " +
+				"than a function, primitive or macro")
+			panic(msg)
 		}
-		f := car.(function)
-		// This is a function - evaluate all arguments
-		for i, a := range args {
-			args[i] = eval(sc, a)
-		}
-		return f(sc, args)
 	case sym:
 		return sc.lookup(e)
 	}
@@ -62,5 +61,5 @@ func flatten(s sexpr) (ss []sexpr) {
 	if s != nil {
 		panic("List isn't flat")
 	}
-	return
+	return 
 }

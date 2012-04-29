@@ -63,6 +63,9 @@ func init() {
 		"make-chan": function(builtinMakeChan),
 		"go": primitive(primitiveGo),
 		"<-": function(builtinLeftArrow),
+
+		// Macros
+		"defmacro": function(primitiveDefmacro),
 	}
 
 	global = &scope{globalData, nil}

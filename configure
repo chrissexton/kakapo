@@ -4,6 +4,7 @@ set -e
 
 ./genrepl.sh
 ./geninit.sh
+./genkeywords.sh > keywords
 (cd scanpkgs && go build)
 scanpkgs/scanpkgs > packages.go
 

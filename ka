@@ -1,0 +1,6 @@
+#!/bin/sh
+# Readline wrapper for the Kakapo REPL.
+
+here=`dirname $0`
+rlwrap -f $here/keywords $here/kakapo
+

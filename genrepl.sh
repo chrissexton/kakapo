@@ -1,2 +1,2 @@
-./txt2go.sh repl < repl.lisp > repl.go
+./txt2go.sh main repl < repl.lisp > repl.go
 

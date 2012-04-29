@@ -2,9 +2,9 @@
 
 ECHO=/bin/echo
 
-$ECHO "package main"
+$ECHO "package $1"
 $ECHO
-$ECHO -n "var $1 = \`"
+$ECHO -n "var $2 = \`"
 cat
 $ECHO "\`"
 

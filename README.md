@@ -9,7 +9,7 @@ and kakapo.go (which showcases the entire api of the backing library).
 	3. go install
 
 # Running
-	$ kakapo
+	$ ./ka
 	Welcome to Kakapo
 	kakapo> (print "Hello, 世界") 
 	"Hello, 世界"

@@ -158,23 +158,18 @@ func primitiveDefmacro(sc *scope, ss []sexpr) sexpr {
 // but not evaluating it.
 func primitiveMacroexpand1(sc *scope, ss []sexpr) sexpr {
 	if len(ss) != 1 {
-		msg := fmt.Sprint("Expected one argument to macroexpand,",
+		msg := fmt.Sprint("Expected one argument to macroexpand-1,",
 			"got", len(ss))
 		panic(msg)
 	}
-	contents := flatten(ss[0])
-	if len(contents) < 2 {
-		msg := fmt.Sprintf("Expected (macro-name args...), got %s",
-			asString(ss[0]))
-		panic(msg)
-	}
-	car := eval(sc, contents[0])
-	switch m := car.(type) {
+	ss2 := flatten(eval(sc, ss[0]))
+	first := eval(sc, ss2[0])
+	switch m := first.(type) {
 	case macro:
-		return m.expand(contents[1:len(contents)])
+		return m.expand(ss2[1:len(ss2)])
 	}
 	msg := fmt.Sprintf("In macroexpand-1, expected a macro, got %s",
-		asString(car))
+		asString(ss2[0]))
 	panic(msg)
 	return Nil
 }

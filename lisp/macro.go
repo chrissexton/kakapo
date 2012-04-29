@@ -13,8 +13,8 @@ type macro struct {
 func (m macro) expand(args []sexpr) sexpr {
 	if len(args) != len(m.argNames) {
 		pattern := ("Wrong number of arguments to %s macro. " +
-			"Expected %i args, got %i")
-		msg := fmt.Sprintf(pattern, len(args), len(m.argNames))
+			"Expected %d args, got %d")
+		msg := fmt.Sprintf(pattern, m.name, len(m.argNames), len(args))
 		panic(msg)
 	}
 	newBody := m.body

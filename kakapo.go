@@ -5,9 +5,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	. "kakapo/lisp"
 	"os"
 	"strings"
-	. "kakapo/lisp"
 )
 
 const VERSION = `0.5`
@@ -54,4 +54,3 @@ func main() {
 		}
 	}
 }
-

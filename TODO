@@ -4,13 +4,10 @@ For 0.4:
  * Slices
 
 For 0.5:
- * Goroutines
- * Channels
  * Macros
 
-Other:
-
-Allow (lambda nil x)
+Quasiquotation
+Rewrite test suite using go test
 Ability to write current state to a file
 Use gmp for math where necessary (or everywhere)
 Test suites: measure code coverage

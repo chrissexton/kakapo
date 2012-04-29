@@ -34,8 +34,10 @@ func main() {
 	ExposeGlobal("-interpreter-version", VERSION)
 
 	args := flag.Args()
+	// Define functions and macros from core.lisp
+	EvalFrom(strings.NewReader(core))
 	if len(args) == 0 {
-		// Start the read-eval-print loop
+		// Start the read-eval-print loop (repl.lisp)
 		EvalFrom(strings.NewReader(repl))
 	} else {
 		for _, path := range args {

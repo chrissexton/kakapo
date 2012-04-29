@@ -2,7 +2,14 @@ package lisp
 
 import "fmt"
 
-type primitive func(*scope, []sexpr) sexpr
+type primitive_t struct {
+	name string
+	f func(*scope, []sexpr) sexpr
+}
+
+func primitive(name string, f func(*scope, []sexpr) sexpr) primitive_t {
+	return primitive_t{name, f}
+}
 
 // (go expr)
 // Runs expr in the background.
@@ -136,9 +143,39 @@ func primitiveDefmacro(sc *scope, ss []sexpr) sexpr {
 		panic(msg)
 	}
 	argNames := unpackSymList(ss[1])
-	body := ss[2]
+	bodyScope := newScope(sc)
+	for _, argName := range(argNames) {
+		bodyScope.define(argName, argName)
+	}
+	body := eval(bodyScope, ss[2])
 	m := macro{idSym, argNames, body}
 	sc.defineHigh(idSym, m)
+	return Nil
+}
+
+// (macroexpand-1 '(macroName arg1 arg2 ...))
+// Runs the specified macro on the arguments, returning the resulting AST
+// but not evaluating it.
+func primitiveMacroexpand1(sc *scope, ss []sexpr) sexpr {
+	if len(ss) != 1 {
+		msg := fmt.Sprint("Expected one argument to macroexpand,",
+			"got", len(ss))
+		panic(msg)
+	}
+	contents := flatten(ss[0])
+	if len(contents) < 2 {
+		msg := fmt.Sprintf("Expected (macro-name args...), got %s",
+			asString(ss[0]))
+		panic(msg)
+	}
+	car := eval(sc, contents[0])
+	switch m := car.(type) {
+	case macro:
+		return m.expand(contents[1:len(contents)])
+	}
+	msg := fmt.Sprintf("In macroexpand-1, expected a macro, got %s",
+		asString(car))
+	panic(msg)
 	return Nil
 }
 

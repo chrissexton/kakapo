@@ -41,8 +41,8 @@ func asString(v sexpr) string {
 		return fmt.Sprintf("\"%s\"", v)
 	case function:
 		return "<func>"
-	case primitive:
-		return "<primitive>"
+	case primitive_t:
+		return fmt.Sprintf("<primitive: %s>", v.name)
 	case native:
 		return "<native>"
 	case nil:
@@ -57,7 +57,7 @@ func isFunction(s sexpr) bool {
 }
 
 func isPrimitive(s sexpr) bool {
-	_, ok := s.(primitive)
+	_, ok := s.(primitive_t)
 	return ok
 }
 

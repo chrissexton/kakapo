@@ -1,5 +1,7 @@
 package lisp
 
+import "fmt"
+
 // (recover '(id ...) expr handler)
 func builtinRecover(sc *scope, ss []sexpr) sexpr {
 	if len(ss) != 3 {
@@ -37,5 +39,6 @@ func builtinPanic(sc *scope, ss []sexpr) sexpr {
 	}
 
 	id := ss[0]
-	panic(id)
+	fmt.Println("Panicking with", asString(id))
+	panic(asString(id))
 }

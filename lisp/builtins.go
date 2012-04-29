@@ -11,13 +11,13 @@ import (
 func init() {
 	globalData := map[sym]sexpr{
 		// Misc. primitives (primitives.go)
-		"if":     primitive(primitiveIf),
-		"for":    primitive(primitiveFor),
-		"lambda": primitive(primitiveLambda),
-		"let":    primitive(primitiveLet),
-		"define": primitive(primitiveDefine),
-		"quote":  primitive(primitiveQuote),
-		"begin":  primitive(primitiveBegin),
+		"if":     primitive("if", primitiveIf),
+		"for":    primitive("for", primitiveFor),
+		"lambda": primitive("lambda", primitiveLambda),
+		"let":    primitive("let", primitiveLet),
+		"define": primitive("define", primitiveDefine),
+		"quote":  primitive("quote", primitiveQuote),
+		"begin":  primitive("begin", primitiveBegin),
 
 		// Nil
 		"nil": Nil,
@@ -32,6 +32,7 @@ func init() {
 		"cons": function(builtinCons),
 		"car":  function(builtinCar),
 		"cdr":  function(builtinCdr),
+		"list": function(builtinList),
 		"list?": function(builtinIsList),
 
 		// Basic stuff
@@ -62,11 +63,12 @@ func init() {
 
 		// Concurrency
 		"make-chan": function(builtinMakeChan),
-		"go": primitive(primitiveGo),
+		"go": primitive("go", primitiveGo),
 		"<-": function(builtinLeftArrow),
 
 		// Macros
-		"defmacro": function(primitiveDefmacro),
+		"defmacro": primitive("defmacro", primitiveDefmacro),
+		"macroexpand-1": primitive("macroexpand-1", primitiveMacroexpand1),
 	}
 
 	global = &scope{globalData, nil}

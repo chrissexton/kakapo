@@ -26,3 +26,11 @@ func builtinCdr(sc *scope, ss []sexpr) sexpr {
 	}
 	return ss[0].(cons).cdr
 }
+
+func builtinList(sc *scope, ss []sexpr) sexpr {
+	if len(ss) == 0 {
+		return Nil
+	}
+	return cons{ss[0], builtinList(sc, ss[1:len(ss)])}
+}
+

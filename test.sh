@@ -4,6 +4,7 @@ set -e
 
 echo "Testing..."
 
+(cd lisp && go test)
 for f in test/*.lisp; do
 	echo "  $f"
 	./kakapo testing.lisp $f

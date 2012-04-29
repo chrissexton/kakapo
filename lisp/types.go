@@ -43,10 +43,12 @@ func asString(v sexpr) string {
 		return "<func>"
 	case primitive_t:
 		return fmt.Sprintf("<primitive: %s>", v.name)
-	case native:
-		return "<native>"
+	case macro:
+		return fmt.Sprintf("<macro: %s>", v.name)
 	case nil:
 		return "nil"
+	case native:
+		return "<native>"
 	}
 	return "<unknown>"
 }

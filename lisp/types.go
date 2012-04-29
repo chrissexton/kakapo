@@ -2,6 +2,7 @@ package lisp
 
 import (
 	"fmt"
+	"strings"
 )
 
 type cons struct {
@@ -23,6 +24,14 @@ func (v cons) String() string {
 func asString(v sexpr) string {
 	switch v := v.(type) {
 	case cons:
+		if isList(v) {
+			items := flatten(v)
+			strs := make([]string, len(items))
+			for i, x := range(items) {
+				strs[i] = asString(x)
+			}
+			return "(" + strings.Join(strs, " ") + ")"
+		}
 		return v.String()
 	case sym:
 		return string(v)
@@ -51,3 +60,15 @@ func isPrimitive(s sexpr) bool {
 	_, ok := s.(primitive)
 	return ok
 }
+
+func isList(s sexpr) bool {
+	if s == nil {
+		return true
+	}
+	switch c := s.(type) {
+	case cons:
+		return isList(c.cdr)
+	}
+	return false;
+}
+

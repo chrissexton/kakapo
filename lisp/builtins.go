@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"reflect"
 )
 
 // Circumvent lame initialization loop detection. An explicit init() allows
@@ -171,15 +172,29 @@ func builtinApply(sc *scope, ss []sexpr) sexpr {
 
 // (equal? arg1 ...)
 func builtinEqual(sc *scope, ss []sexpr) sexpr {
-	if len(ss) == 0 {
-		return 1.0
-	}
-	r := true
-	for _, s := range ss[1:] {
-		r = r && (s == ss[0])
-	}
-	if r {
-		return 1.0
-	}
-	return Nil
+	return builtinEq(sc, ss);
 }
+
+// (= ...)
+//
+// Returns true if and only if all arguments are equal.
+func builtinEq(sc *scope, ss []sexpr) sexpr {
+	if len(ss) == 0 {
+		return true
+	}
+	for _, e := range(ss[1:len(ss)]) {
+		if !reflect.DeepEqual(ss[0], e) {
+			return Nil
+		}
+	}
+	return true
+}
+
+// (/= ...)
+//
+// Returns true if not all arguments are equal.
+func builtinNe(sc *scope, ss []sexpr) sexpr {
+	r := builtinEq(sc, ss)
+	return builtinNot(sc, []sexpr{r})
+}
+

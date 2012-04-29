@@ -1,14 +1,12 @@
 ; Basic arithmetic
 
 (S' "Equality")
-(T' (=))
 (T' (= 1 1))
 (F' (= 1 2))
 
 (S' "Inequality")
-(T' (/=))
-(T' (/= 1 2 3))
-(F' (/= 1 1 3))
+(T' (/= 1 2))
+(F' (/= 1 1))
 
 (S' "Greater-than")
 (T' (>))

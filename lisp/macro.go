@@ -1,8 +1,6 @@
 package lisp
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type macro struct {
 	name sym

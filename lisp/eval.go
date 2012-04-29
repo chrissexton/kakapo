@@ -22,7 +22,6 @@ func eval(sc *scope, e sexpr) sexpr {
 
 		case macro:
 			// Expand the macro invocation and then evaluate the result.
-			builtinPrint(sc, []sexpr{f})
 			return eval(sc, f.expand(args))
 
 		default:

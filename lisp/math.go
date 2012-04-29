@@ -82,53 +82,6 @@ func builtinMod(sc *scope, ss []sexpr) sexpr {
 	return int(a) % int(b) // TODO fixme to work with floats
 }
 
-// (= ...)
-//
-// Returns true if and only if all arguments are equal.
-func builtinEq(sc *scope, ss []sexpr) sexpr {
-	if len(ss) == 0 {
-		return 1.0
-	}
-	r := true
-	f, ok := ss[0].(float64)
-	if !ok {
-		panic("Invalid argument")
-	}
-	for _, s := range ss[1:] {
-		n, ok := s.(float64)
-		if !ok {
-			panic("Invalid argument")
-		}
-		r = r && (n == f)
-	}
-	if r {
-		return 1.0
-	}
-	return Nil
-}
-
-func builtinNe(sc *scope, ss []sexpr) sexpr {
-	if len(ss) == 0 {
-		return 1.0
-	}
-	r := true
-	f, ok := ss[0].(float64)
-	if !ok {
-		panic("Invalid argument")
-	}
-	for _, s := range ss[1:] {
-		n, ok := s.(float64)
-		if !ok {
-			panic("Invalid argument")
-		}
-		r = r && (n != f)
-	}
-	if r {
-		return 1.0
-	}
-	return Nil
-}
-
 func builtinGt(sc *scope, ss []sexpr) sexpr {
 	if len(ss) == 0 {
 		return 1.0

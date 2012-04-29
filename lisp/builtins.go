@@ -32,6 +32,7 @@ func init() {
 		"cons": function(builtinCons),
 		"car":  function(builtinCar),
 		"cdr":  function(builtinCdr),
+		"list?": function(builtinIsList),
 
 		// Basic stuff
 		"equal?": function(builtinEqual),
@@ -72,6 +73,18 @@ func init() {
 
 	// Now interpret init_lisp
 	load(init_lisp)
+}
+
+// (list? expr)
+//
+// Tells whether the given expression is a list.
+func builtinIsList(sc *scope, ss []sexpr) sexpr {
+	if len(ss) != 1 {
+		msg := fmt.Sprint("Expected exactly one arg to list?, got",
+			len(ss))
+		panic(msg)
+	}
+	return isList(ss[0])
 }
 
 // (make-chan)

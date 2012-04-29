@@ -42,6 +42,8 @@ func init() {
 
 		// Boolean arithmetic (bool.go)
 		"not": function(builtinNot),
+		"true": true,
+		"false": false,
 
 		// Arithmetic (math.go)
 		"=":  function(builtinEq),

@@ -48,7 +48,7 @@ func asString(v sexpr) string {
 	case nil:
 		return "nil"
 	case native:
-		return "<native>"
+		return fmt.Sprintf("%#v", v)
 	}
 	return "<unknown>"
 }

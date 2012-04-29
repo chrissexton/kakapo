@@ -3,6 +3,7 @@
 set -e
 
 ./genrepl.sh
+./geninit.sh
 (cd scanpkgs && go build)
 scanpkgs/scanpkgs > packages.go
 

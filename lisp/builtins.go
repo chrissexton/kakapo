@@ -72,7 +72,7 @@ func init() {
 
 		// Macros
 		"defmacro": primitive("defmacro", primitiveDefmacro),
-		"macroexpand-1": primitive("macroexpand-1", primitiveMacroexpand1),
+		"macroexpand1": primitive("macroexpand1", primitiveMacroexpand1),
 	}
 
 	global = &scope{globalData, nil}

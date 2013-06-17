@@ -91,23 +91,31 @@ import . "reflect"`)
 }
 
 func isInt(s string) bool {
-	r := regexp.MustCompile(".* = ")
-	s = r.ReplaceAllString(s, "")
-	_, err := strconv.ParseInt(s, 10, 64)
-	if err != nil {
-		return false
-	}
-	return true
+    r := regexp.MustCompile(".* = ")
+    s = r.ReplaceAllString(s, "")
+    _, err := strconv.ParseInt(s, 10, 64)
+    if err != nil {
+        _, err := strconv.ParseInt(s, 0, 64)
+        if err == nil {
+            return true
+        }
+        return false
+    }
+    return true
 }
 
 func isUint(s string) bool {
-	r := regexp.MustCompile(".* = ")
-	s = r.ReplaceAllString(s, "")
-	_, err := strconv.ParseUint(s, 10, 64)
-	if err != nil {
-		return false
-	}
-	return true
+    r := regexp.MustCompile(".* = ")
+    s = r.ReplaceAllString(s, "")
+    _, err := strconv.ParseUint(s, 10, 64)
+    if err != nil {
+        _, err := strconv.ParseUint(s, 0, 64)
+        if err == nil {
+            return true
+        }
+        return false
+    }
+    return true
 }
 
 var isPkg = regexp.MustCompile("\\.a$")

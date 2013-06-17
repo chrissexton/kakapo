@@ -10,3 +10,4 @@ scanpkgs/scanpkgs
 repl.go
 *.out
 _testmain.go
+keywords

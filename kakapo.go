@@ -5,7 +5,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	. "kakapo/lisp"
+	. "github.com/chrissexton/kakapo/lisp"
 	"os"
 	"strings"
 )

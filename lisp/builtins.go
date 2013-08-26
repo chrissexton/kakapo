@@ -59,7 +59,7 @@ func init() {
 		"%":  function(builtinMod),
 
 		// Go runtime (compat.go)
-		"import": function(builtinImport),
+		//"import": function(builtinImport),
 
 		// Panics (panic.go)
 		"recover": function(builtinRecover),
@@ -171,7 +171,7 @@ func builtinPrint(sc *scope, ss []sexpr) sexpr {
 // This is (or should be) the inverse of read-string.
 func builtinString(sc *scope, ss []sexpr) sexpr {
 	if len(ss) != 1 {
-		msg := fmt.Sprint("string function expected 1 argument, got %d",
+		msg := fmt.Sprintf("string function expected 1 argument, got %d",
 			len(ss))
 		panic(msg)
 	}

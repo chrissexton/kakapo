@@ -133,7 +133,7 @@ func primitiveDefmacro(sc *scope, ss []sexpr) sexpr {
 	if len(ss) != 3 {
 		msg := fmt.Sprintf(
 			"Invalid number of arguments to defmacro.  " +
-			"Expected 3, got %i", len(ss))
+			"Expected 3, got %d", len(ss))
 		panic(msg)
 	}
 	idSym, ok := ss[0].(sym)
@@ -171,7 +171,6 @@ func primitiveMacroexpand1(sc *scope, ss []sexpr) sexpr {
 	msg := fmt.Sprintf("In macroexpand-1, expected a macro, got %s",
 		asString(ss2[0]))
 	panic(msg)
-	return Nil
 }
 
 // unpackSymList converts an expression containing a list of symbols to a slice
@@ -182,7 +181,7 @@ func unpackSymList(e sexpr) []sym {
 	for i, e2 := range(symExprs) {
 		s, ok := e2.(sym)
 		if !ok {
-			msg := fmt.Sprint("Expected a symbol, got %s",
+			msg := fmt.Sprintf("Expected a symbol, got %s",
 				asString(e2));
 			panic(msg)
 		}
